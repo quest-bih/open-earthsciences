@@ -335,7 +335,7 @@ plot_oa_other <- function(data, total_perc) {
     count(year, genre, oa_status) |>
     tidyr::complete(year, genre, oa_status, fill = list(n = 0)) |>
     pivot_wider(names_from = oa_status, values_from = n) |>
-    plot_ly(x = ~ list(year, genre)) |>
+    plot_ly(x = ~ list(genre, year)) |>  
   add_bars(y = ~ gold,
            marker = list(color = color[1]),
            name = "gold") |>
@@ -372,7 +372,7 @@ plot_oa_other <- function(data, total_perc) {
       ungroup() |>
       mutate(perc = replace_na(perc, 0)) |>
       pivot_wider(id_cols = -n, names_from = oa_status, values_from = perc) |>
-      plot_ly(x = ~ list(year, genre)) |>
+      plot_ly(x = ~ list(genre, year)) |>  
       add_bars(y = ~ gold,
                marker = list(color = color[1]),
                name = "gold") |>

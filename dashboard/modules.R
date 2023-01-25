@@ -34,18 +34,14 @@ moduleUI_journal <- function(id) {
         )
       ),
       column(3,
-             selectInput(
+             checkboxGroupInput(
                ns("select_inst"),
                label = NULL,
                choices = list(
                  "Geologische Wissenschaften (WE 1)" = "WE 1", 
                  "Geographische Wissenschaften (WE 2)" = "WE 2", 
                  "Meteorologie (WE 3)" = "WE 3"),
-               selected = c("WE 1", "WE 2", "WE 3"),
-               multiple = TRUE,
-               selectize = TRUE,
-               width = NULL,
-               size = NULL
+               selected = c("WE 1", "WE 2", "WE 3")
              )
              
              ),
@@ -153,7 +149,7 @@ moduleUI_other <- function(id) {
         # fluidRow(column(12, align = "left", h4(strong("How important do you think the following goals should be in the science system? – Regarding these goals, how much do you feel a pressure of expectations in your scientific work? – How do you prioritize these goals in your own work?"
         # )))),
         #  h1(style = "color: #aa1c7d;text-align:left;font-size:40px;", "25 %"), #textOutput(ns("module_number_prio"))
-        h4(style = "color: #aa1c7d;text-align:left;font-size:20px;", "Open-Access-Status von anderen Ressourcen nach Jahr und Kategorie für WE 2"), #textOutput(ns("module_text"))
+        h4(style = "color: #aa1c7d;text-align:left;font-size:20px;", "Open-Access-Status von anderen Ressourcen nach Jahr und Kategorie für Geographische Wissenschaften (WE 2)"), #textOutput(ns("module_text"))
         plotlyOutput(ns("plot_other_oa"), height = "400px")
       )
     ),
@@ -214,7 +210,7 @@ moduleUI_other_license <- function(id) {
         # fluidRow(column(12, align = "left", h4(strong("How important do you think the following goals should be in the science system? – Regarding these goals, how much do you feel a pressure of expectations in your scientific work? – How do you prioritize these goals in your own work?"
         # )))),
         #  h1(style = "color: #aa1c7d;text-align:left;font-size:40px;", "25 %"), #textOutput(ns("module_number_prio"))
-        h4(style = "color: #aa1c7d;text-align:left;font-size:20px;", "Lizenzen von anderen Ressourcen (WE 2, 2016-2021)"), #textOutput(ns("module_text"))
+        h4(style = "color: #aa1c7d;text-align:left;font-size:20px;", "Lizenzen von anderen Ressourcen (Geographische Wissenschaften (WE 2), 2016-2021)"), #textOutput(ns("module_text"))
         plotlyOutput(ns("plot_other_license"), height = "400px")
       )
     ),
