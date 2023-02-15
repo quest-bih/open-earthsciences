@@ -272,7 +272,7 @@ plot_journals_licenses <- function(total_perc) {
 data_other <- function() {
   
   # Specifying the path for file
-  path <- "data/we2_alt_publ2.xlsx"
+  path <- "data/we2_alt_publ3.xlsx"
   #path <- "dashboard/data/we2_alt_publ2.xlsx"
   
   # Accessing all the sheets 
@@ -284,6 +284,7 @@ data_other <- function() {
   
   # attaching all dataframes together
   data_other <- bind_rows(data_other, .id="Sheet")
+  
   
   data_other <- data_other |>
     select(-c(starts_with(".."), "DOI", "Website"))
@@ -323,7 +324,9 @@ data_other <- function() {
            oa_status) |>
     mutate(genre = case_when(str_detect(genre, "book-chapter|School book chapter") ~ "book-chapter",
                               str_detect(genre, "[mM]onografie|[bB]uch|book") ~ "book",
-                              TRUE ~ "other"))
+                             str_detect(genre, "[jJ]ournal-article") ~ "journal-article",
+                              TRUE ~ "other")) |>
+    filter(!genre == "journal-article")
   
 }
 
