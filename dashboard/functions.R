@@ -313,7 +313,6 @@ data_other <- function() {
         "cc-by-nd",
         "cc-by-nc-nd",
         "cc0",
-        "other license",
         "no license"
       )
     )) |>
@@ -325,8 +324,7 @@ data_other <- function() {
     mutate(genre = case_when(str_detect(genre, "book-chapter|School book chapter") ~ "book-chapter",
                               str_detect(genre, "[mM]onografie|[bB]uch|book") ~ "book",
                              str_detect(genre, "[jJ]ournal-article") ~ "journal-article",
-                              TRUE ~ "other")) |>
-    filter(!genre == "journal-article")
+                              TRUE ~ "other"))
   
 }
 
