@@ -313,19 +313,20 @@ data_other <- function() {
         "cc-by-nd",
         "cc-by-nc-nd",
         "cc0",
-        "other license",
         "no license"
       )
     )) |>
-    mutate(oa_status = factor(oa_status, levels = oa_status_colors)) |>
+    mutate(oa_status = factor(oa_status, levels = oa_status_colors[1:5])) |>
     select(year = Sheet,
            license,
            genre,
            oa_status) |>
-    mutate(genre = case_when(str_detect(genre, "book-chapter|School book chapter") ~ "book-chapter",
-                              str_detect(genre, "[mM]onografie|[bB]uch|book") ~ "book",
-                             str_detect(genre, "[jJ]ournal-article") ~ "journal-article",
-                              TRUE ~ "other")) |>
+    mutate(genre = case_when(str_detect(genre, "book-chapter|School book chapter") ~ "Book chapter",
+                             str_detect(genre, "[mM]onografie|[bB]uch|book") ~ "Book",
+                             str_detect(genre, "[jJ]ournal-article") ~ "Journal article",
+                             str_detect(genre, "conference-paper") ~ "Conference paper",
+                             str_detect(genre, "conference-abstract") ~ "Conference abstract",
+                              TRUE ~ "Other")) |>
     filter(!genre == "journal-article")
   
 }
@@ -354,9 +355,6 @@ plot_oa_other <- function(data, total_perc) {
   add_bars(y = ~ closed,
            marker = list(color = color[5]),
            name = "closed") |>
-  add_bars(y = ~ `no doi`,
-           marker = list(color = color[6]),
-           name = "no doi") |>
   layout(barmode = "relative",
          xaxis = list(title = FALSE),
          yaxis = list(title = FALSE),
@@ -391,9 +389,6 @@ plot_oa_other <- function(data, total_perc) {
       add_bars(y = ~ closed,
                marker = list(color = color[5]),
                name = "closed") |>
-      add_bars(y = ~ `no doi`,
-               marker = list(color = color[6]),
-               name = "no doi") |>
       layout(barmode = "relative",
              xaxis = list(title = FALSE),
              yaxis = list(title = FALSE,
@@ -429,7 +424,7 @@ plot_other_licenses <- function(data, total_perc) {
       plot_ly(x = ~ license,
               y = ~ n,
               color = ~ oa_status,
-              colors = color) |>
+              colors = color[1:5]) |>
       add_bars() |>
       layout(barmode = "stack",
              xaxis = list(title = "Lizenz"),
@@ -442,7 +437,7 @@ plot_other_licenses <- function(data, total_perc) {
       plot_ly(x = ~ license,
               y = ~ perc,
               color = ~ oa_status,
-              colors = color) |>
+              colors = color[1:5]) |>
       add_bars() |>
       layout(barmode = "stack",
              xaxis = list(title = "Lizenz"),
