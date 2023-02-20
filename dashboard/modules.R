@@ -103,7 +103,7 @@ moduleUI_other <- function(id) {
   
   wellPanel(
     style = "padding-top: 10px; padding-bottom: 0px;",
-    fluidRow(column(8,
+    fluidRow(column(9,
                     h2(strong("Open-Access-Status von anderen Ressourcen"), align = "left"),
     )),
     fluidRow(
@@ -143,7 +143,7 @@ moduleUI_other <- function(id) {
     ))
     ),
     fluidRow(column(
-      8,
+      10,
       wellPanel(
         style = "padding-top: 0px; padding-bottom: 0px; background-color:#DCE3E5",
         # fluidRow(column(12, align = "left", h4(strong("How important do you think the following goals should be in the science system? – Regarding these goals, how much do you feel a pressure of expectations in your scientific work? – How do you prioritize these goals in your own work?"
@@ -154,7 +154,7 @@ moduleUI_other <- function(id) {
       )
     ),
     column(
-      4, includeMarkdown("texts/test.md")
+      10, includeMarkdown("texts/test.md")
     ))
   )
 }
