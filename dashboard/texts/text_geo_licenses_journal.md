@@ -1,0 +1,3 @@
+Diese Grafik zeigt die unterschiedlichen CC-Lizenzen von Journal-Artikeln veröffentlicht von Wissenschaftler*innen an den drei Instituten. Creative Commons (CC) bietet verschiedene Standard-Lizenzverträge an, die bei der Verbreitung kreativer Inhalte genutzt werden können, um die rechtlichen Bedingungen festzulegen. <a href='https://de.creativecommons.net/was-ist-cc/'>Auf dieser Seite gibt es eine Beschreibung der unterschiedlichen Lizenzen.</a>
+ 
+770 der Journal-Artikel haben keine Lizenz. Davon sind 43% noch nicht automatisch ausgewertet, weil keine DOIs eingetragen sind. 32% der Artikel ohne Lizenz sind closed. Von den CC-lizenzierten Artikeln wird CC-BY (Namensnennung 4.0 International) am häufigsten (231 Journal-Artikel) verwendet.  
