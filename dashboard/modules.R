@@ -61,7 +61,7 @@ moduleUI_journal <- function(id) {
       )
     ),
     column(
-      4, includeMarkdown("texts/test.md")
+      4, includeMarkdown("texts/text_geo_OA_journal.md")
     ))
   )
 }
@@ -94,7 +94,7 @@ moduleUI_journal_license <- function(id) {
                 plotlyOutput(ns("plot_journal_license"), height = "400px")
               )
             ),
-            column(4, includeMarkdown("texts/test.md"))))
+            column(4, includeMarkdown("texts/text_geo_licenses_journal.md"))))
 }
 
 
@@ -154,7 +154,7 @@ moduleUI_other <- function(id) {
       )
     ),
     column(
-      10, includeMarkdown("texts/test.md")
+      10, includeMarkdown("texts/text_geo_OA_other.md")
     ))
   )
 }

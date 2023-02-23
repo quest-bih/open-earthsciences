@@ -24,6 +24,22 @@ source("modules.R", encoding = "UTF-8")
 # UI ----
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+# ui_elemets
+methods_panel <- function(title, what_text, how_text, limit_text, style = "default")
+{
+  bsCollapsePanel(title, # JT test remove strong strong(title), in order for updateCollapse() to work
+                  strong("What it measures:"),
+                  br(),
+                  p(what_text),
+                  strong("How it was calculated:"),
+                  br(),
+                  p(how_text),
+                  strong("Limitations:"),
+                  br(),
+                  p(limit_text),
+                  style = style)
+}
+
 ui <-
   tagList(
     # tags$head(tags$script(type="text/javascript", src = "code.js")),
@@ -40,7 +56,7 @@ ui <-
                       8,
                       h1(
                         style = "margin-left:0cm",
-                        strong("Open Access Dashboard Geowissenschaften"),
+                        strong("Open Science Dashboard Geowissenschaften"),
                         align = "left"
                       ),
                       h4(
@@ -51,7 +67,7 @@ ui <-
                       ),
                       h4(
                         style = "margin-left:0cm",
-                        'Mit der Verbreitung offener Wissenschaft steigt auch der Bedarf nach einem Monitoring von Open-Science-Praktiken. Dies erlaubt einen breiten Blick auf die Aktivitäten, kann neue Anreize schaffen, Open Science umzusetzen und setzt Impulse für die Entwicklung von Policies oder Infrastrukturangeboten.'
+                        'Dieses Dashboard gibt einen Überblick über mehrere Metriken offener Forschung im Fachbereich Geowissenschaften an der Freien Universität Berlin. Dieses Dashboard ist ein Pilotprojekt, das sich noch in der Entwicklung befindet. In Zukunft können weitere Metriken hinzugefügt werden.'
                       ),
                       br()
                     ),
@@ -90,19 +106,48 @@ ui <-
         "Methodik",
         value = "tabMethods",
         h1("Methodik"),
-        h4("Hier wird die Methodik beschrieben.")
+        h2("Publication search"),
+        bsCollapse(id = "methodsPanels_PublicationSearch",
+                   bsCollapsePanel("Publication search",
+                                   'The assessed metrics are publication-based metrics. The FU university bibliography provided this list of publications, which was created by merging, deduplicating and improving data.'
+                   )),
+        h2("Open Science"),
+        bsCollapse(id = "methodsPanels_OpenScience",
+                   methods_panel("Open Access",
+                                
+                                 'The open access metric measures the degree of openness of the publications by researchers from the Department of Earth Sciences, Free University Berlin. Open access publications are available to everyone worldwide for free, helping to distribute research results quickly and transparently.',
+                                 'The Earth Sciences Library first created a list of journal article publications by FU Earth Science researchers, then queried the Unpaywall database via its API to obtain information on the Open Access (OA) status of those publications. Unpaywall is today the most comprehensive database of open access information on research articles. It has been queried using Digital Object Identifiers (DOIs) for each of the publications. There are different OA statuses a publication can have, which are color-coded. Gold OA denotes publication in a pure OA journal. Green OA denotes a freely available repository version. Hybrid OA denotes an OA publication in a paywalled journal where the author(s) have opted to pay for their article to be open access. Bronze OA denotes a publication which is freely available on the publisher website, but without a clear open license enabling re-use: this includes articles in a paywalled journal which have been made free to read but access might be withdrawn at any time. Thus we only consider the categories gold, green and hybrid to be true open access here. As one publication can have several OA versions (e.g. a gold version in an OA journal as well as a green version in a repository), a hierarchy is used so that each publication is assigned the OA category with the highest level of openness. The standard hierarchy used here is gold - hybrid - green (journal version before repository version, excepting bronze). We group the results from Unpaywall by OA status and publication year. One important point for OA status is that it may change over time: the OA percentage is not a fixed number. Repository versions (green OA) are often made available after a delay, such that the OA percentage for a given year typically rises retrospectively. Thus the point in time of data retrieval is important for understanding the OA percentage. The current OA status data were retrieved in November 2022.',
+                                 'Unpaywall only stores information for publications that have a DOI assigned by Crossref. Articles without a Crossref DOI have to be excluded from the OA analysis. However, these publications will be evaluated manually.'
+                   )
+        )
       ),
       tabPanel(
         "Datensätze",
         value = "tabDatasets",
         h1("Datensätze"),
-        h4("Hier werden die Datensätze angezeigt.")
+        h4("The following tables contain the datasets underlying the numbers and plots
+              shown for the metrics included in this Shiny app."),
+        br(),
+        bsCollapse(id = "datasetPanels_PublicationDataset_geo",
+                   bsCollapsePanel("Publication dataset",
+                                   DT::dataTableOutput("data_table_geo"),
+                                   style = "default")),
       ),
       tabPanel("Über", value = "tabAbout",
                h1("Über"))
     )
   )
 
+observeEvent(input$buttonDatasetBSS, {
+  updateTabsetPanel(session, "navbarTabs",
+                    selected = "tabDatasets")
+  updateCollapse(session, "datasetPanels_PublicationDataset_geo",
+                 open = "Open Science Geowissenschaften Datensatz")
+})
+
+data_table_geo <- DT::renderDataTable({
+  make_datatable(geo_ressources)
+})
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Server ----
