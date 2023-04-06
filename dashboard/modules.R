@@ -103,58 +103,61 @@ moduleUI_other <- function(id) {
   
   wellPanel(
     style = "padding-top: 10px; padding-bottom: 0px;",
-    fluidRow(column(9,
-                    h2(strong("Open-Access-Status von anderen Ressourcen"), align = "left"),
+    fluidRow(column(8,
+                    h2(strong("Open-Access-Status von anderen Publikationsformaten"), align = "left"),
     )),
     fluidRow(
-    # column(
-    #   3,
-    #   sliderInput(
-    #     ns("year"),
-    #     #label = "Jahr",
-    #     label = NULL,
-    #     #inputId = "year",
-    #     min = 2016,
-    #     max = 2021,
-    #     value = c(2016, 2021),
-    #     sep = "",
-    #     ticks = FALSE,
-    #     round = TRUE
-    #   )
-    # ),
-    # column(3,
-    #        selectInput(
-    #          ns("select_inst"),
-    #          label = NULL,
-    #          choices = list(
-    #            "Geologische Wissenschaften (WE 1)" = "WE 1", 
-    #            "Geographische Wissenschaften (WE 2)" = "WE 2", 
-    #            "Meteorologie (WE 3)" = "WE 3"),
-    #          selected = c("WE 1", "WE 2", "WE 3"),
-    #          multiple = TRUE,
-    #          selectize = TRUE,
-    #          width = NULL,
-    #          size = NULL
-    #        )
-    #        
-    # ),
+    column(
+      3,
+      sliderInput(
+        ns("year"),
+        #label = "Jahr",
+        label = NULL,
+        #inputId = "year",
+        min = 2016,
+        max = 2021,
+        value = c(2016, 2021),
+        sep = "",
+        ticks = FALSE,
+        round = TRUE
+      )
+    ),
+    column(3,
+           checkboxGroupInput(
+             ns("select_institut"),
+             label = NULL,
+             choices = list(
+               "Geologische Wissenschaften (WE 1)" = "WE 1", 
+               "Geographische Wissenschaften (WE 2)" = "WE 2", 
+               "Meteorologie (WE 3)" = "WE 3"),
+             selected = c("WE 1", "WE 2", "WE 3")
+             #choices = list(
+             #  "Book",
+             #  "Book chapter",
+             #  "Conference paper",
+             #  "Conference abstract",
+             #  "Other"),
+             #selected = c("Book", "Book chapter", "Conference paper", "Conference abstract", "Other"),
+             #multiple = TRUE,
+             #selectize = TRUE,
+             #width = NULL,
+             #size = NULL
+           )
+
+    ),
     (column(3,
             checkboxInput(ns("checkbox_perc"), label = "Anzeige in %", value = FALSE)
     ))
     ),
     fluidRow(column(
-      10,
+      8,
       wellPanel(
         style = "padding-top: 0px; padding-bottom: 0px; background-color:#DCE3E5",
-        # fluidRow(column(12, align = "left", h4(strong("How important do you think the following goals should be in the science system? – Regarding these goals, how much do you feel a pressure of expectations in your scientific work? – How do you prioritize these goals in your own work?"
-        # )))),
-        #  h1(style = "color: #aa1c7d;text-align:left;font-size:40px;", "25 %"), #textOutput(ns("module_number_prio"))
-        h4(style = "color: #aa1c7d;text-align:left;font-size:20px;", "Open-Access-Status von anderen Ressourcen nach Jahr und Kategorie für Geographische Wissenschaften (WE 2)"), #textOutput(ns("module_text"))
+        h4(style = "color: #aa1c7d;text-align:left;font-size:20px;", "Open-Access-Status von anderen Publikationsformaten nach Jahr und Kategorie für Geographische Wissenschaften (WE 2) und Meteorologie (WE3)"), #textOutput(ns("module_text"))
         plotlyOutput(ns("plot_other_oa"), height = "400px")
       )
     ),
-    column(
-      10, includeMarkdown("texts/text_geo_OA_other.md")
+    column(4, includeMarkdown("texts/text_geo_OA_other.md")
     ))
   )
 }
@@ -165,7 +168,7 @@ moduleUI_other_license <- function(id) {
   wellPanel(
     style = "padding-top: 10px; padding-bottom: 0px;",
     fluidRow(column(8,
-                    h2(strong("Lizenzen von anderen Ressourcen"), align = "left"),
+                    h2(strong("Lizenzen von anderen Publikationsformaten"), align = "left"),
     )),
     fluidRow(
       # column(
@@ -210,7 +213,7 @@ moduleUI_other_license <- function(id) {
         # fluidRow(column(12, align = "left", h4(strong("How important do you think the following goals should be in the science system? – Regarding these goals, how much do you feel a pressure of expectations in your scientific work? – How do you prioritize these goals in your own work?"
         # )))),
         #  h1(style = "color: #aa1c7d;text-align:left;font-size:40px;", "25 %"), #textOutput(ns("module_number_prio"))
-        h4(style = "color: #aa1c7d;text-align:left;font-size:20px;", "Lizenzen von anderen Ressourcen (Geographische Wissenschaften (WE 2), 2016-2021)"), #textOutput(ns("module_text"))
+        h4(style = "color: #aa1c7d;text-align:left;font-size:20px;", "Lizenzen von anderen Publikationsformaten (Geographische Wissenschaften (WE 2) und Meteorologie (WE 3), 2016-2021)"), #textOutput(ns("module_text"))
         plotlyOutput(ns("plot_other_license"), height = "400px")
       )
     ),
@@ -247,16 +250,18 @@ moduleServer_journal <- function(id){
       
       output$plot_other_oa <- renderPlotly({
         
-        data <- data_other()
-        plot_oa_other(data,
-                      total_perc = input$checkbox_perc)
+        data_other <- data_oa_other(total_perc = input$checkbox_perc)
+        plot_oa_other(data_other, 
+                      min = input$year[1], 
+                      max= input$year[2],
+                      total_perc = input$checkbox_perc,
+                      institut = input$select_institut)
         
       })
       
       output$plot_other_license <- renderPlotly({
         
-        plot_other_licenses(data,
-                            total_perc = input$checkbox_perc)
+        plot_other_licenses(total_perc = input$checkbox_perc)
         
       })
       
