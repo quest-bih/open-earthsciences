@@ -269,77 +269,131 @@ plot_journals_licenses <- function(total_perc) {
 # Other ressources oa status ----
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-data_other <- function() {
   
-  # Specifying the path for file
-  path <- "data/we2_alt_publ3.xlsx"
-  #path <- "dashboard/data/we2_alt_publ2.xlsx"
-  
-  # Accessing all the sheets 
-  sheet = excel_sheets(path)
-  
-  # applying sheet names to dataframe names
-  data_other <- lapply(setNames(sheet, sheet), 
-                    function(x) read_excel(path, sheet=x))
-  
-  # attaching all dataframes together
-  data_other <- bind_rows(data_other, .id="Sheet")
-  
-  
-  data_other <- data_other |>
-    select(-c(starts_with(".."), "DOI", "Website"))
-  
+
+path1 <- "data/we2_alt_publ3.xlsx"  # Specifying the path for file
+sheet1 = excel_sheets(path1) # Accessing all the sheets
+# Applying sheet names to dataframe names
+we2_resources <- lapply(setNames(sheet1, sheet1), 
+                        function(x) read_excel("data/we2_alt_publ3.xlsx", sheet = x))
+# Combine each file separately
+we2_resources <- bind_rows(we2_resources, .id="Sheet")
+
+# Attaching all dataframes together of the first institut
+we2_resources <- we2_resources |> 
+  select(-c(starts_with(".."), "DOI", "Website"))
+
+# Specifying the path for file
+path2 <- "data/we3_alt_publ.xlsx"  
+# Accessing all the sheets
+sheet2 = excel_sheets(path2) 
+# Applying sheet names to dataframe names
+we3_resources <- lapply(setNames(sheet2, sheet2), 
+                        function(x) read_excel("data/we3_alt_publ.xlsx", sheet = x))
+# Combine each file separately
+we3_resources <- bind_rows(we3_resources, .id="Sheet")
+# Attaching all dataframes together of the first institut
+we3_resources <- we3_resources |> 
+  select(-c(starts_with(".."))) #"DOI", "Website"
+
+# Convert atributes to the correct formats
+we3_resources$oa_date <- as.POSIXct(we3_resources$oa_date, tz = "UTC")
+we3_resources$year <- as.numeric(we3_resources$year)
+we3_resources$year_ubib <- as.numeric(we3_resources$year_ubib)
+
+# Join two dataframes together of both institutes
+data_other <- full_join(we2_resources, we3_resources)
   # Clean data
   
-  data_other <- data_other |>
-    mutate(
-      oa_status = case_when(
-        str_detect(oa_status, "^closed.*") ~ "closed",
-        str_detect(oa_status, "^gold.*") ~ "gold",
-        is.na(oa_status) ~ "closed",
-        TRUE ~ oa_status
-      )
-    ) |>
-    mutate(license = case_when(!str_detect(license, "^cc.*") ~ "other license",
-                               is.na(license) ~ "no license",
-                               TRUE ~ license)) |>
-    mutate(license = factor(
-      license,
-      levels = c(
-        "cc-by",
-        "cc-by-sa",
-        "cc-by-nc",
-        "cc-by-nc-sa",
-        "cc-by-nd",
-        "cc-by-nc-nd",
-        "cc0",
-        "no license"
-      )
-    )) |>
-    mutate(oa_status = factor(oa_status, levels = oa_status_colors[1:5])) |>
-    select(year = Sheet,
-           license,
-           genre,
-           oa_status) |>
-    mutate(genre = case_when(str_detect(genre, "book-chapter|School book chapter") ~ "Book chapter",
-                             str_detect(genre, "[mM]onografie|[bB]uch|book") ~ "Book",
-                             str_detect(genre, "[jJ]ournal-article") ~ "Journal article",
-                             str_detect(genre, "conference-paper") ~ "Conference paper",
-                             str_detect(genre, "conference-abstract") ~ "Conference abstract",
-                              TRUE ~ "Other")) |>
-    filter(!genre == "journal-article")
   
-}
+  data_oa_other <- function(total_perc) {
+    if (total_perc == FALSE) {
+    data <- data_other |>
+      mutate(
+          oa_status = case_when(
+            str_detect(oa_status, "^closed.*") ~ "closed",
+            str_detect(oa_status, "^gold.*") ~ "gold",
+            is.na(oa_status) ~ "closed",
+            TRUE ~ oa_status
+          )
+        ) |>
+        mutate(oa_status = factor(oa_status, levels = oa_status_colors[1:5])) |>
+        mutate(genre = case_when(str_detect(genre, "book-chapter|School book chapter") ~ "Book chapter",
+                                 str_detect(genre, "[mM]onografie|[bB]uch|book") ~ "Book",
+                                 #str_detect(genre, "[jJ]ournal-article") ~ "Journal article",
+                                 str_detect(genre, "conference-paper") ~ "Conference paper",
+                                 str_detect(genre, "conference-abstract") ~ "Conference abstract",
+                                 TRUE ~ "Other")) |>
+        count(year, oa_status, institut_ubib, genre) |>
+        filter(year >= 2016) |>
+        mutate(institut_ubib = str_remove(institut_ubib, "Institut für")) |>
+        mutate(institut_ubib = str_trim(institut_ubib)) |>
+        mutate(institut_ubib = factor(
+          institut_ubib,
+          levels = c(
+            "Geologische Wissenschaften (WE 1)",
+            "Geographische Wissenschaften (WE 2)",
+            "Meteorologie (WE 3)"
+          )
+        )) |>
+        tidyr::complete(institut_ubib, year, oa_status, genre, fill = list(n = 0)) |>
+        mutate(oa_status = factor(oa_status, levels = oa_status_colors)) |>
+        mutate(institut_short = str_extract_all(institut_ubib,  "(?<=\\().+?(?=\\))")) |>
+        mutate(institut_short = factor(institut_short, levels = c("WE 1", "WE 2", "WE 3"))) |>
+        pivot_wider(names_from = oa_status, values_from = n)
+      
+    } else {
+      
+      data <- data_other |>
+        mutate(
+            oa_status = case_when(
+              str_detect(oa_status, "^closed.*") ~ "closed",
+              str_detect(oa_status, "^gold.*") ~ "gold",
+              is.na(oa_status) ~ "closed",
+              TRUE ~ oa_status
+            )
+          ) |>
 
-plot_oa_other <- function(data, total_perc) {
+        mutate(oa_status = factor(oa_status, levels = oa_status_colors[1:5])) |>
+        mutate(genre = case_when(str_detect(genre, "book-chapter|School book chapter") ~ "Book chapter",
+                                   str_detect(genre, "[mM]onografie|[bB]uch|book") ~ "Book",
+                                   #str_detect(genre, "[jJ]ournal-article") ~ "Journal article",
+                                   str_detect(genre, "conference-paper") ~ "Conference paper",
+                                   str_detect(genre, "conference-abstract") ~ "Conference abstract",
+                                   TRUE ~ "Other")) |>
+        count(year, oa_status, institut_ubib, genre) |>
+        filter(year >= 2016) |>
+        mutate(institut_ubib = str_remove(institut_ubib, "Institut für")) |>
+        mutate(institut_ubib = str_trim(institut_ubib)) |>
+        mutate(institut_ubib = factor(
+          institut_ubib,
+          levels = c(
+            "Geologische Wissenschaften (WE 1)",
+            "Geographische Wissenschaften (WE 2)",
+            "Meteorologie (WE 3)"
+          )
+        )) |>
+        tidyr::complete(institut_ubib, year, oa_status, genre, fill = list(n = 0)) |>
+        group_by(institut_ubib, year, genre) |>
+        mutate(perc = as.numeric(n)/sum(n)) |>
+        ungroup() |>
+        mutate(oa_status = factor(oa_status, levels = oa_status_colors)) |>
+        mutate(institut_short = str_extract_all(institut_ubib,  "(?<=\\().+?(?=\\))")) |>
+        mutate(institut_short = factor(institut_short, levels = c("WE 1", "WE 2", "WE 3"))) |>
+        pivot_wider(id_cols = -n, names_from = oa_status, values_from = perc)
+    }
+  }
   
+
+
+
+plot_oa_other <- function(data, min, max, total_perc, institut) {
+  # print(genre)
   if (total_perc == FALSE) {
   data |>
-    select(-license) |>
-    count(year, genre, oa_status) |>
-    tidyr::complete(year, genre, oa_status, fill = list(n = 0)) |>
-    pivot_wider(names_from = oa_status, values_from = n) |>
-    plot_ly(x = ~ list(genre, year)) |>  
+    filter(year >=min & year <= max) |>
+    filter(institut_short %in% institut) |>
+    plot_ly(x = ~ list(year, genre, institut_short)) |> 
   add_bars(y = ~ gold,
            marker = list(color = color[1]),
            name = "gold") |>
@@ -365,15 +419,9 @@ plot_oa_other <- function(data, total_perc) {
   } else {
       
    data |>
-      select(-license) |>
-      count(year, genre, oa_status) |>
-      tidyr::complete(year, genre, oa_status, fill = list(n = 0)) |>
-      group_by(genre, year) |>
-      mutate(perc = n/sum(n)) |>
-      ungroup() |>
-      mutate(perc = replace_na(perc, 0)) |>
-      pivot_wider(id_cols = -n, names_from = oa_status, values_from = perc) |>
-      plot_ly(x = ~ list(genre, year)) |>  
+      filter(year >=min & year <= max) |>
+      filter(institut_short %in% institut) |>
+      plot_ly(x = ~ list(year, genre, institut_short)) |> 
       add_bars(y = ~ gold,
                marker = list(color = color[1]),
                name = "gold") |>
@@ -406,25 +454,39 @@ plot_oa_other <- function(data, total_perc) {
 # Other ressources licenses ----
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-plot_other_licenses <- function(data, total_perc) {
+plot_other_licenses <- function(total_perc) {
   
-  data <- data_other()
-  
-  data <- data |>
+  other_licenses <- data_other |>
+    mutate(license = case_when(!str_detect(license, "^cc.*") ~ "other license",
+                               is.na(license) ~ "no license",
+                               TRUE ~ license)) |>
     select(-genre, -year) |>
     count(license, oa_status) |>
+      mutate(license = factor(
+        license,
+        levels = c(
+          "cc-by",
+          "cc-by-sa",
+          "cc-by-nc",
+          "cc-by-nc-sa",
+          "cc-by-nd",
+          "cc-by-nc-nd",
+          "cc0",
+          "no license"
+        )
+      )) |>
+    mutate(oa_status = factor(oa_status, levels = oa_status_colors)) |>
     tidyr::complete(license, oa_status, fill = list(n = 0)) |>
     group_by(license) |>
     mutate(perc = n/sum(n)) |>
-    ungroup() |>
-    mutate(perc = replace_na(perc, 0)) 
+    ungroup()
   
   if (total_perc == FALSE) {
-    data |>
+    other_licenses |>
       plot_ly(x = ~ license,
               y = ~ n,
               color = ~ oa_status,
-              colors = color[1:5]) |>
+              colors = color) |>
       add_bars() |>
       layout(barmode = "stack",
              xaxis = list(title = "Lizenz"),
@@ -433,11 +495,11 @@ plot_other_licenses <- function(data, total_perc) {
              plot_bgcolor = "#DCE3E5") |>
       config(displayModeBar = FALSE)
   } else{
-    data |>
+    other_licenses |>
       plot_ly(x = ~ license,
               y = ~ perc,
               color = ~ oa_status,
-              colors = color[1:5]) |>
+              colors = color) |>
       add_bars() |>
       layout(barmode = "stack",
              xaxis = list(title = "Lizenz"),
