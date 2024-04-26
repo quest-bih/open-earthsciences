@@ -17,7 +17,7 @@ make_datatable <- function(dataset)
                 ))
 }
 
-make_datatable_BSS <- function(dataset)
+make_datatable_2 <- function(dataset)
 {
   DT::datatable(data = dataset,
                 extensions = 'Buttons',

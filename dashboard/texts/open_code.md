@@ -1,0 +1,1 @@
+This graphic displays the distribution of open code cases based on the type of repository where the code was shared. Automated detection identified 12 articles with openly shared code in all insitutes for the years 2016-2021, which corresponds to a proportion of 2.38% of the articles.

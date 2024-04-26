@@ -1,3 +1,5 @@
-Diese Grafik zeigt die unterschiedlichen CC-Lizenzen von Journal-Artikeln veröffentlicht von Wissenschaftler*innen an den drei Instituten. Creative Commons (CC) bietet verschiedene Standard-Lizenzverträge an, die bei der Verbreitung kreativer Inhalte genutzt werden können, um die rechtlichen Bedingungen festzulegen. <a href='https://de.creativecommons.net/was-ist-cc/'>Auf dieser Seite gibt es eine Beschreibung der unterschiedlichen Lizenzen.</a>
- 
-770 der Journal-Artikel haben keine Lizenz. Davon sind 43% noch nicht automatisch ausgewertet, weil keine DOIs eingetragen sind. 32% der Artikel ohne Lizenz sind closed. Von den CC-lizenzierten Artikeln wird CC-BY (Namensnennung 4.0 International) am häufigsten (231 Journal-Artikel) verwendet.  
+This graphic shows the distribution of open licenses (as most common Creative Commons (CC) licenses) used for open access journal ("gold", "green", "hybrid" and "bronze") articles displayed in the graphic above. 
+
+Creative Commons offers various standard licenses that provide different degrees of openness to publications. Freie Universität Berlin recommends strongly to its researchers to use the most open licence - CC BY 4.0 DEED (Attribution 4.0 International), which allows researchers to openly share and adapt material for any purpose under the term of attribution (= credit to the author, link to the license and references to changes made). 
+
+This <a href='https://de.creativecommons.net/was-ist-cc/'>page</a> provides a description of the different licenses.</a>
