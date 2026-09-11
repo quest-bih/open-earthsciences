@@ -1,11 +1,7 @@
-The other research outputs, other than scientific journal articles, are divided into five categories: 
+This chart shows the Open Access status of non-journal-article outputs of the three institutes. The non-journal-article outputs are divided into three categories:
 
-- book
-- book chapter
-- conference abstract
-- conference paper
-- and other. 
-
-The "other" category includes, for example, book reviews, project reports, chapters in textbooks, or electronic supplementary material.
-
-It should be noted that the representation of the OA (Open Access) status of other publishing formats can be distorted. For example, the six chapters with Gold OA status published in the same Gold OA book in 2021.
+- Book
+- Book chapter
+- Conference paper
+ 
+Other non-journal-article outputs include conference abstracts, book reviews, project reports, chapters in textbooks, or electronic supplementary material. These outputs are excluded from this visualisation.
