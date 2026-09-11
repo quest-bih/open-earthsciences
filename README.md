@@ -30,7 +30,7 @@ The dashboard is extended yearly with new publications data provided by the [Fre
 
 Open data detection follows the approach applied at Charité Universitätsmedizin Berlin (detailed methodology to be published in September 2026), using the extended [ODDPub algorithm](https://github.com/quest-bih/oddpub). The following figure shows the workflow and main numbers:
 
-![open data detection workflow earth sciences](images/Grey Blue Pink Green Bold Project Status Steps Flowchart (1).png){alt="open data detection workflow earth sciences"}
+![open data detection workflow earth sciences](images/flowchart_open_data_detection.png)
 
 ## Publications
 
