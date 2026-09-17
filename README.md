@@ -4,11 +4,11 @@
 
 ## Authors
 
-Anastasiia Iarkaeva ([anastasiia.iarkaeva\@charte.de](mailto:anastasiia.iarkaeva@charte.de){.email}), Evgeny Bobrov ([evgeny.bobrov\@bih-charite.de](mailto:evgeny.bobrov@bih-charite.de){.email}) - QUEST Center for Responsible Research, Berlin Institute of Health
+Anastasiia Iarkaeva ([anastasiia.iarkaeva\@charte.de](mailto:anastasiia.iarkaeva@charte.de)), Evgeny Bobrov ([evgeny.bobrov\@bih-charite.de](mailto:evgeny.bobrov@bih-charite.de)) - QUEST Center for Responsible Research, Berlin Institute of Health
 
 ## Description
 
-The Open Earth Sciences dashboard was developed as part of the project [Berlin University Allience (BUA) Open Science Magnifiers (2024-2026)](https://www.berlin-university-alliance.de/en/commitments/research-quality/forschung/ongoing/dashboard/index.html). It includes the following metrics specifically for the Earth Sciences Department at Freie Universität Berlin:
+The [Open Earth Sciences dashboard](https://quest-open-earthsciences.charite.de/) was developed as part of the project [Berlin University Allience (BUA) Open Science Magnifiers (2024-2026)](https://www.berlin-university-alliance.de/en/commitments/research-quality/forschung/ongoing/dashboard/index.html). It includes the following metrics specifically for the Earth Sciences Department at Freie Universität Berlin:
 
 - Open Access of journal publications
 
