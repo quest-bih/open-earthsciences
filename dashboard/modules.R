@@ -126,8 +126,8 @@ moduleUI_journal_OA <- function(id) {
           ns("year"),
           label = NULL,
           min = 2016,
-          max = 2024,
-          value = c(2016, 2024),
+          max = 2025,
+          value = c(2016, 2025),
           sep = "",
           ticks = FALSE,
           round = TRUE
@@ -191,8 +191,8 @@ moduleUI_journal_license <- function(id) {
           ns("year"),
           label = NULL,
           min = 2016,
-          max = 2024,
-          value = c(2016, 2024),
+          max = 2025,
+          value = c(2016, 2025),
           sep = "",
           ticks = FALSE,
           round = TRUE
@@ -277,8 +277,8 @@ moduleUI_non_journal_OA <- function(id) {
           ns("year"),
           label = NULL,
           min = 2016,
-          max = 2024,
-          value = c(2016, 2024),
+          max = 2025,
+          value = c(2016, 2025),
           sep = "",
           ticks = FALSE,
           round = TRUE
@@ -310,7 +310,7 @@ moduleUI_non_journal_OA <- function(id) {
           metric_box(
             title = "Open Access status of non-journal-article outputs by year and institute",
             value = paste0(round(OA_other[["OA_perc_other"]], 0), "%"),
-            value_text = paste0("of non-journal-article outputs were OA between 2016 and 2024"),
+            value_text = paste0("of non-journal-article outputs were OA between 2016 and 2025"),
             plot = plotlyOutput(ns("plot_other_oa"), height = "400px"),
             info_id = "infoOA_alt",
             info_title = "Open Access",
@@ -339,8 +339,8 @@ moduleUI_non_journal_pid <- function(id) {
           ns("year"),
           label = NULL,
           min = 2016,
-          max = 2024,
-          value = c(2016, 2024),
+          max = 2025,
+          value = c(2016, 2025),
           sep = "",
           ticks = FALSE,
           round = TRUE
@@ -372,7 +372,7 @@ moduleUI_non_journal_pid <- function(id) {
           metric_box(
             title = "PIDs of non-journal-article outputs by year and institute",
             value = paste(round(PID_other[["PID_perc_other"]], 0), "%"),
-            value_text = paste0("of non-journal-article outputs had a PID between 2016 and 2024"),
+            value_text = paste0("of non-journal-article outputs had a PID between 2016 and 2025"),
             plot = plotlyOutput(ns("plot_other_pid"), height = "400px"),
             info_id = "infoOL_alt",
             info_title = "PID",

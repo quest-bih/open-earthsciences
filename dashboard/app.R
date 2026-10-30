@@ -105,7 +105,7 @@ ui <-
                 'This dashboard provides an overview of several Open Science-related
                         metrics in the Department of Earth Sciences at Freie Universität Berlin.
                         It may be used by researchers as well as the department administration to
-                        evaluate the status and uptake trends and developments of Open Science practices.
+                        evaluate the status and uptake, and development of Open Science practices.
                         Such practices are addressed in several university policy documents (see for
                         example the <a href="http://dx.doi.org/10.17169/refubium-31442">Open Access
                         Policy of FU Berlin</a>, the <a href="http://dx.doi.org/10.17169/refubium-32141">Research Data Policy of FU Berlin</a>
@@ -123,7 +123,7 @@ ui <-
             div(
               style = "text-align: right;padding-top: 80px;padding-right: 20px;",
               actionButton('buttonMethods', 'Methods'),
-              actionButton('buttonDatasets', 'Data sets', style = "margin-left: 12px;"),
+              actionButton('buttonDatasets', 'Datasets', style = "margin-left: 12px;"),
               br()
             )
           )
@@ -201,7 +201,7 @@ ui <-
             div(
               style = "text-align: right;padding-top: 80px;padding-right: 20px;",
               actionButton('buttonMethods', 'Methods'),
-              actionButton('buttonDatasets', 'Data sets', style = "margin-left: 12px;"),
+              actionButton('buttonDatasets', 'Datasets', style = "margin-left: 12px;"),
               br()
             )
           )
@@ -209,12 +209,18 @@ ui <-
         
         br(),
         moduleUI_open_data_articles("open_data_articles"),
-        moduleUI_open_data("open_data_repo")
-        
+        moduleUI_open_data("open_data_repo"),
+        br(),
+        br(),
+        bsCollapsePanel(strong("Impressum"), impressum_text, style = "default"),
+        bsCollapsePanel(strong("Datenschutz"), datenschutz_text, style = "default")
       ),
       tabPanel(
         "Methods",
         value = "tabMethods",
+        tags$div(
+          style = "display: flex; flex-direction: column; min-height: 70vh;",
+          tags$div(
         h1("Methods"),
         bsCollapse(
           id = "methodsPanels_PublicationSearch",
@@ -248,7 +254,8 @@ ui <-
                                  used for this dashboard are described <a href="https://doi.org/10.5281/zenodo.10998219">here</a>. The open
                                  access status information for the 2016-2022 dataset
                                  was retrieved in November 2022, for the 2023
-                                 dataset in September 2024, and for the 2024 dataset in January 2026.'
+                                 dataset in September 2024, for the 2024 dataset in January 2026, 
+                                 and for the 2025 dataset in October 2026.'
           )
         ),
         bsCollapse(
@@ -324,19 +331,30 @@ ui <-
                                  Manual validation (Step 4) of the ODDPub positive Open Data cases resulted in 154 articles (9%)
                                  having Open Data associated.
                                  The detailed methodology publication about data collection and validation for the Open Data metric
-                                 included in the tab <b>Open data</b> will be published in <b>September 2026</b>.
+                                 included in the tab <b>Open data</b> can be found on <a href="https://doi.org/10.57874/z5fk-we46">Octopus publication platform</a>.
                                  </p>'
           )
-        )),
+        )
+        )
+        )
+        ),
+        tags$div(
+          style = "margin-top: auto; padding-top: 30px;",
+          bsCollapsePanel(strong("Impressum"), impressum_text, style = "default"),
+          bsCollapsePanel(strong("Datenschutz"), datenschutz_text, style = "default")
+        )
       ),
       tabPanel(
-        "Data sets",
+        "Datasets",
         value = "tabDatasets",
-        h1("Data sets"),
+        tags$div(
+          style = "display: flex; flex-direction: column; min-height: 90vh;",
+          tags$div(
+        h1("Datasets"),
         h3("Open Access, Licenses and Persistent Identifiers"),
         h4(
           HTML(
-            'The <a href="https://doi.org/10.5281/zenodo.14627194">dataset publication</a>
+            'The <a href="https://doi.org/10.5281/zenodo.23813501">dataset publication</a>
         contains the datasets underlying the numbers and plots shown for the metrics included in this dashboard.'
           )
         ),
@@ -345,10 +363,14 @@ ui <-
         h4(
           HTML(
             'The dataset publication underlying the numbers and plots shown for the metrics included in the
-                tab <b>Open data</b> will be published in <b>September 2026</b>.'
+                tab <b>Open data</b> can be found under <a href="https://doi.org/10.5281/zenodo.22661527">dataset publication</a>.'
           )
+        )
         ),
-        
+        tags$div(
+          style = "margin-top: auto; padding-top: 30px;",
+        bsCollapsePanel(strong("Impressum"), impressum_text, style = "default"),
+        bsCollapsePanel(strong("Datenschutz"), datenschutz_text, style = "default")
         # bsCollapse(id = "datasetPanels_PublicationDataset",
         # bsCollapsePanel("Journal publications",
         #                DT::dataTableOutput("data_table_articles"),
@@ -357,10 +379,15 @@ ui <-
         #            bsCollapsePanel("Non-journal research outputs",
         #                            DT::dataTableOutput("data_table_other"),
         #                            style = "default")),
+        )
+        )
       ),
       tabPanel(
         "About",
         value = "tabAbout",
+        tags$div(
+          style = "display: flex; flex-direction: column; min-height: 90vh;",
+          tags$div(
         h1("About"),
         h4(
           HTML(
@@ -392,9 +419,16 @@ ui <-
         the <a href="https://blogs.fu-berlin.de/open-research-berlin/">Open Research blog Berlin</a> for updates.'
           )
         )
-      ),
+          ),
+        tags$div(
+          style = "margin-top: auto; padding-top: 30px;",
+          bsCollapsePanel(strong("Impressum"), impressum_text, style = "default"),
+          bsCollapsePanel(strong("Datenschutz"), datenschutz_text, style = "default")
     )
   ))
+    )
+  )
+  )
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # Server ----

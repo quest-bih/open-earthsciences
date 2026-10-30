@@ -6,7 +6,7 @@
 # Data preparation
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-show_year <- as.integer("2024")
+show_year <- as.integer("2025")
 
 # OA colors labels
 oa_status_colors <- c("gold", "hybrid", "green", "bronze", "closed")
@@ -34,7 +34,7 @@ licenses_colors <- brewer.pal(9, "RdYlGn")
 
 # Loading journal articles
 geo_ressources <- read.csv2(
-  here("data", "journal_articles_2016_2024_v1.csv"),
+  here("data", "journal_articles_v5.csv"),
   sep = ";",
   header = T,
   quote = "\"",
@@ -47,8 +47,10 @@ data_oa_journals <- function(data, min, max, total_perc, institut, color) {
     data <- geo_ressources |> # 2186
       drop_na(institut_short) |>
       drop_na(oa_status_mod) |>
+      mutate(oa_status_mod = case_when(oa_status_mod == "diamond" ~ "gold",
+                                       TRUE ~ oa_status_mod)) |>
       count(year_release, oa_status_mod, institut_short) |>
-      filter(year_release >= 2016, year_release <= 2024) |>
+      filter(year_release >= 2016, year_release <= 2025) |>
       tidyr::complete(institut_short, year_release, oa_status_mod, fill = list(n = 0)) |>
       mutate(
         n = as.numeric(n),
@@ -63,9 +65,11 @@ data_oa_journals <- function(data, min, max, total_perc, institut, color) {
   } else {
     data <- geo_ressources |>
       drop_na(institut_short) |>
-      drop_na(oa_status_mod) |>
+      drop_na(oa_status_mod) |>      
+      mutate(oa_status_mod = case_when(oa_status_mod == "diamond" ~ "gold",
+                                       TRUE ~ oa_status_mod)) |>
       count(year_release, oa_status_mod, institut_short) |>
-      filter(year_release >= 2016, year_release <= 2024) |>
+      filter(year_release >= 2016, year_release <= 2025) |>
       tidyr::complete(institut_short, year_release, oa_status_mod, fill = list(n = 0)) |>
       mutate(n = as.numeric(n)) |>
       group_by(institut_short, year_release) |>
@@ -375,7 +379,7 @@ data_journals_licenses <- function(data, total_perc, institut, min, max) {
       filter(license_mod != "copyright") |> # 1305
       count(year_release, license_mod, institut_short) |>
       filter(year_release >= 2016) |>
-      filter(year_release <= 2024) |>
+      filter(year_release <= 2025) |>
       tidyr::complete(institut_short, year_release, license_mod, fill = list(n = 0)) |>
       mutate(license_mod = factor(
         license_mod,
@@ -403,7 +407,7 @@ data_journals_licenses <- function(data, total_perc, institut, min, max) {
       filter(license_mod != "copyright") |> # 1305
       count(year_release, license_mod, institut_short) |>
       filter(year_release >= 2016) |>
-      filter(year_release <= 2024) |>
+      filter(year_release <= 2025) |>
       tidyr::complete(institut_short, year_release, license_mod, fill = list(n = 0)) |>
       group_by(institut_short, year_release) |>
       mutate(total_count = sum(n, na.rm = T)) |>
@@ -568,7 +572,7 @@ plot_journals_licenses <- function(data, min, max, total_perc, institut) {
 
 # Loading non-journal articles
 data_other <- read.csv2(
-  here("data", "non_journal_article_outputs_2016_2024_v1.csv"),
+  here("data", "non_journal_article_outputs_v5.csv"),
   header = T,
   quote = "\"",
   encoding = "UTF-8"
@@ -1408,7 +1412,7 @@ calculate_OA_percentages_other <- function(OA_other, categories)
     summarise(OA = sum(count))
   
   OA_perc_other <- publ_color_oa |>
-    cross_join(publ_all) |>
+    left_join(publ_all, by = character()) |>
     mutate(perc = round(OA / all * 100, 1)) #|>
   #ungroup()
   
